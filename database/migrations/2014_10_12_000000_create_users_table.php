@@ -28,19 +28,20 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 50);
         });
+        Schema::create('cuartos', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('propietario');
+            $table->foreign('propietario')->references('id')->on('users');
+        });
         Schema::create('dispositivos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 150);
             $table->unsignedBigInteger('tipo_dispositivo');
+            $table->unsignedBigInteger('cuarto');
             $table->foreign('tipo_dispositivo')->references('id')->on('tipos_dispositivos');
+            $table->foreign('cuarto')->references('id')->on('cuartos');
         });
-        Schema::create('cuartos', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('propietario');
-            $table->unsignedBigInteger('dispositivos');
-            $table->foreign('propietario')->references('id')->on('users');
-            $table->foreign('dispositivos')->references('id')->on('dispositivos');
-        });
+ 
     }
 
     public function down()
