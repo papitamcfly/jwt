@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\dispositivos;
 use App\Models\cuartos;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AuthController extends Controller
+class CuartosController extends Controller
 {
     public function __construct()
     {
@@ -118,33 +116,8 @@ class AuthController extends Controller
 
         return response()->json(['task' => $task], 200);
     }
-    public function regcuarto(Request $request){
-        $validator = Validator::make($request->all(),[
-            'nombre' => 'required|string'
-        ]);
-        if($validator->fails()){
-            return response()->json(['error'=>$validator->errors()],400);
-        }
-        $user = JWTAuth::parseToken()->authenticate();
-        $userid = $user->id;
-        $cuarto = new cuartos();
-        $cuarto->nombre = $request->nombre;
-        $cuarto->propietario = $userid;
-        $cuarto->save();
-        $cuartoid = $cuarto->id;
-        $dispositivos = [
-            ['nombre' => "DT" . $cuartoid, 'tipo_dispositivo' => 1, 'cuarto' => $cuartoid],
-            ['nombre' => "DH" . $cuartoid, 'tipo_dispositivo' => 2, 'cuarto' => $cuartoid],
-            ['nombre' => "SO" . $cuartoid, 'tipo_dispositivo' => 3, 'cuarto' => $cuartoid],
-            ['nombre' => "VO" . $cuartoid, 'tipo_dispositivo' => 4, 'cuarto' => $cuartoid],
-            ['nombre' => "PO" . $cuartoid, 'tipo_dispositivo' => 5, 'cuarto' => $cuartoid],
-            ['nombre' => "HU" . $cuartoid, 'tipo_dispositivo' => 6, 'cuarto' => $cuartoid],
-            ['nombre' => "NF" . $cuartoid, 'tipo_dispositivo' => 7, 'cuarto' => $cuartoid],
-        ];
-    
-        DB::table('dispositivos')->insert($dispositivos);
-        return response()->json(['msg'=>'el cuarto ha sido creado exitosamente con el identificador']);
-    }  
+
+
     public function profile(){
         return response()->json(auth()->user());
     }
