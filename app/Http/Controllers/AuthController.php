@@ -46,7 +46,10 @@ class AuthController extends Controller
             'message' => 'usuario registrado correctamente. verifica tu correo para activar tu cuenta ', 'user'=>$user
         ],201);
     }
-
+    public function refresh(){
+        $token = JWTAuth::refresh();
+        return $this -> createNewToken($token);
+    }
     public function createNewToken($token){
         return response()->json([
             'access_token' => $token,
@@ -148,6 +151,7 @@ class AuthController extends Controller
     public function profile(){
         return response()->json(auth()->user());
     }
+
     public function logout(){
         auth()->logout();
         return response()->json([
