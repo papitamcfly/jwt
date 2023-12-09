@@ -46,10 +46,7 @@ class AuthController extends Controller
             'message' => 'usuario registrado correctamente. verifica tu correo para activar tu cuenta ', 'user'=>$user
         ],201);
     }
-    public function refresh(){
-        $token = JWTAuth::refresh();
-        return $this -> createNewToken($token);
-    }
+
     public function createNewToken($token){
         return response()->json([
             'access_token' => $token,
@@ -78,6 +75,22 @@ class AuthController extends Controller
            'success' => false,
            'message' => 'Account is already activated.',
        ]);
+   }
+
+
+   public function refresh(){
+    $token = JWTAuth::getToken();
+
+
+try {
+    $newToken = JWTAuth::refresh($token);
+} catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+ 
+    return response()->json(['error' => 'Token no válido'], 401);
+}
+
+
+return response()->json(['new_token' => $newToken]);
    }
 
 
