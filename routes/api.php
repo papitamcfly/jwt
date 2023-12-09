@@ -26,6 +26,6 @@ Route::group(['middleware'=> 'api','prefix'=> 'auth'], function ($router) {
     Route::put ('/update', [AuthController::class ,'update']);
     Route::get ('/activate/{token}', [AuthController::class ,'activate'])->name('activate');
     Route::post ('/regcuarto', [AuthController::class ,'regcuarto']);
-
+    Route::post ('/refresh', [AuthController::class ,'refresh']);
 });
 
