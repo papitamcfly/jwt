@@ -171,4 +171,9 @@ return response()->json(['new_token' => $newToken]);
             'message' => 'User logged out'
         ]);
     }
+    public function obtenerDatos()
+    {
+        $cuartos = cuartos::all();
+        return response()->json($cuartos,200);
+    }
 }
