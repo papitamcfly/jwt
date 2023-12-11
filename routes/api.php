@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdafruitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -27,5 +28,13 @@ Route::group(['middleware'=> 'api','prefix'=> 'auth'], function ($router) {
     Route::get ('/activate/{token}', [AuthController::class ,'activate'])->name('activate');
     Route::post ('/regcuarto', [AuthController::class ,'regcuarto']);
     Route::post ('/refresh', [AuthController::class ,'refresh']);
+    Route::get ('/recibir-datos', [AuthController::class ,'obtenerDatos']);
 });
+
+Route::prefix("Adafruit")->group(function(){
+    Route::get('/recibirdatos', [AdafruitController::class, 'getdatos']);
+    Route::get('/alarma', [AdafruitController::class, 'ApagarAlarma']);
+    Route::get('/leds', [AdafruitController::class, 'LuzLed']);
+    Route::get('/puerta', [AdafruitController::class, 'Abrirpuerta']);
+    });
 
