@@ -38,7 +38,7 @@ class AdafruitController extends Controller
                     break;
             }
             $response = Http::withHeaders([
-                'X-AIO-Key' => 'aio_cWgZ15Y7EvHKVP2NNG6IkTpcfOrY',
+                'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65',
             ])->get("https://io.adafruit.com/api/v2/Anahi030702/feeds/".$feed."/data");
     
             if ($response->ok())
@@ -67,7 +67,7 @@ class AdafruitController extends Controller
     public function ApagarAlarma()
     {
         $response = Http::withHeaders([
-            'X-AIO-Key' => 'aio_cWgZ15Y7EvHKVP2NNG6IkTpcfOrY',
+            'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65',
             'Content-Type' => 'application/json', //si no jala es por esta coma
         ])->post("https://io.adafruit.com/api/v2/Anahi030702/feeds/alarma/data",[
             'value' => 0
@@ -91,7 +91,7 @@ class AdafruitController extends Controller
     public function LuzLed()
     {
         $response = Http::withHeaders([
-            'X-AIO-Key' => 'aio_cWgZ15Y7EvHKVP2NNG6IkTpcfOrY',
+            'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65',
             'Content-Type' => 'application/json', //si no jala es por esta coma
         ])->post("https://io.adafruit.com/api/v2/Anahi030702/feeds/leds/data",[
             'value' => 0,
@@ -115,7 +115,8 @@ class AdafruitController extends Controller
     public function Abrirpuerta()
     {
         $response = Http::withHeaders([
-            'X-AIO-Key' => 'aio_cWgZ15Y7EvHKVP2NNG6IkTpcfOrY',
+            'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65'
+            ,
             'Content-Type' => 'application/json', //si no jala es por esta coma
         ])->post("https://io.adafruit.com/api/v2/Anahi030702/feeds/acceso/data",[
             'value' => 1,
