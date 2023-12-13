@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-use App\Models\cuartos;
+
 
 class AdafruitController extends Controller
 {
-    const key = 'aio_thPz49ENA7DJ5eWu1fEFRnYCtShX';
     public function getdatos()
     {
         $feed="humedad";
@@ -39,7 +38,7 @@ class AdafruitController extends Controller
                     break;
             }
             $response = Http::withHeaders([
-                'X-AIO-Key' => self::key,
+                'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65',
             ])->get("https://io.adafruit.com/api/v2/Anahi030702/feeds/".$feed."/data");
     
             if ($response->ok())
@@ -68,7 +67,7 @@ class AdafruitController extends Controller
     public function ApagarAlarma()
     {
         $response = Http::withHeaders([
-            'X-AIO-Key' => self::key,
+            'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65',
             'Content-Type' => 'application/json', //si no jala es por esta coma
         ])->post("https://io.adafruit.com/api/v2/Anahi030702/feeds/alarma/data",[
             'value' => 0
@@ -83,7 +82,7 @@ class AdafruitController extends Controller
         }
         else{
         
-           return response()->json([
+            response()->json([
                 "msg" => "No se ha podido apagar la alarma...",
                 "data" => $response->body()
             ],400);
@@ -92,7 +91,7 @@ class AdafruitController extends Controller
     public function LuzLed()
     {
         $response = Http::withHeaders([
-            'X-AIO-Key' => self::key,
+            'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65',
             'Content-Type' => 'application/json', //si no jala es por esta coma
         ])->post("https://io.adafruit.com/api/v2/Anahi030702/feeds/leds/data",[
             'value' => 0,
@@ -107,7 +106,7 @@ class AdafruitController extends Controller
         }
         else{
         
-           return response()->json([
+            response()->json([
                 "msg" => "No se ha podido apagar los leds...",
                 "data" => $response->body()
             ], 400);
@@ -116,7 +115,7 @@ class AdafruitController extends Controller
     public function Abrirpuerta()
     {
         $response = Http::withHeaders([
-            'X-AIO-Key' => self::key
+            'X-AIO-Key' => 'aio_eyYN44L64sgDk79gkq61PqOFSe65'
             ,
             'Content-Type' => 'application/json', //si no jala es por esta coma
         ])->post("https://io.adafruit.com/api/v2/Anahi030702/feeds/acceso/data",[
@@ -132,57 +131,11 @@ class AdafruitController extends Controller
         }
         else{
         
-           return response()->json([
+            response()->json([
                 "msg" => "No se ha podido abrir la puerta...",
                 "data" => $response->body()
             ], 400);
         }
     }
-    public function creargroup(String $name)
-    {
-       $response = Http::withHeaders([
-            'X-AIO-Key' => self::key,
-            'Content-Type' => 'application/json', //si no jala es por esta coma
-        ])->post("https://io.adafruit.com/api/v2/Anahi030702/groups",[
-            'name' => $name
-        ]);
-        if ($response->ok())
-        {
-            return response()->json([
-                "msg"=>"Grupo creado"
-            ], 200);
-            
-        }
-        else{
-        
-            return response()->json([
-                "msg" => "No se ha podido crear el grupo...",
-                "data" => $response->body()
-            ], 400);
-        }
-    }
-    public function crearfeed($id)
-    {
-        $cuarto = cuartos::find($id);
-        $response = Http::withHeaders([
-            'X-AIO-Key' => self::key,
-            'Content-Type' => 'application/json', //si no jala es por esta coma
-        ])->post("$cuarto->ruta",[
-            'name' => 'ejemplo'
-        ]);
-        if ($response->ok())
-        {
-            return response()->json([
-                "msg"=>"Grupo creado"
-            ], 200);
-            
-        }
-        else{
-        
-            return  response()->json([
-                "msg" => "No se ha podido crear el grupo...",
-                "data" => $response->body()
-            ], 400);
-        }
-    }
+
 }

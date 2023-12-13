@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\Http;
+
 use App\Mail\AccountActivationMail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,6 @@ use App\Models\cuartos;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\AdafruitController;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -137,7 +136,6 @@ return response()->json(['new_token' => $newToken]);
         return response()->json(['task' => $task], 200);
     }
     public function regcuarto(Request $request){
-        $Ada = new AdafruitController();
         $user = JWTAuth::parseToken()->authenticate();
         if (!$user) {
             return response()->json(['error' => 'Usuario no autenticado'], 401);
@@ -152,9 +150,6 @@ return response()->json(['new_token' => $newToken]);
         $cuarto = new cuartos();
         $cuarto->nombre = $request->nombre;
         $cuarto->propietario = $userid;
-        $cuarto->ruta = 'https://io.adafruit.com/api/v2/Anahi030702/groups/'.$request->nombre;
-        $Ada->creargroup($request->nombre);
-        $Ada->crearfeed($user->id);
         $cuarto->save();
         $cuartoid = $cuarto->id;
         $dispositivos = [
