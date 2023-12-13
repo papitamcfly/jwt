@@ -30,7 +30,7 @@ return new class extends Migration
         });
         Schema::create('cuartos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre',50);
+            $table->string('nombre',50)->unique;
             $table->unsignedBigInteger('propietario');
             $table->foreign('propietario')->references('id')->on('users');
         });

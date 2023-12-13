@@ -30,6 +30,8 @@ Route::group(['middleware'=> 'api','prefix'=> 'auth'], function ($router) {
     Route::post ('/refresh', [AuthController::class ,'refresh']);
     Route::get ('/recibir-datos', [AuthController::class ,'obtenerDatos']);
     Route::get ('/cuartoesp/{idcuarto}',[AuthController::class,'cuartoesp']);
+    Route::delete ('/borrarcuarto/{idcuarto}',[AuthController::class,'borrarcuarto']);
+    Route::put ('/editarcuarto/{idcuarto}',[AuthController::class,'editarcuarto']);
 });
 
 Route::prefix("Adafruit")->group(function(){

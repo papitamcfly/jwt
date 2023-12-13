@@ -117,7 +117,7 @@ return response()->json(['new_token' => $newToken]);
         }
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|string',
+            'lasname'=>'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -195,7 +195,52 @@ return response()->json(['new_token' => $newToken]);
         return response()->json($cuarto,200);
         }
         catch (\Exception $e) {
-            return response()->json(['error' => 'Error al obtener la informacion de los cuartos'], 500);
+            return response()->json(['error' => 'Error al obtener la informacion del cuarto'], 500);
         }
+    }
+    public function borrarcuarto($idcuarto)
+    {
+        try
+        {
+            JWTAuth::parseToken()->authenticate();
+            $cuarto = cuartos::find($idcuarto);
+            if( $cuarto){
+              
+                $cuarto->delete();
+              return response()->json([
+                "msg" => "cuarto eliminado",
+                "data" =>  $cuarto
+              ],200);
+            }
+            return response()->json(["error" =>"cuarto no encontrado",404]);
+        }
+        catch(\Exception $e){
+            return response()->json(['error'=>'Error al obtener la informacion del cuarto'],500);
+        }
+    }
+    public function editarcuarto(Request $request ,$idcuarto)
+    {
+        
+        if (!JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
+        $validate = Validator::make($request->all(),
+        [
+            'nombre' => 'required|string'
+        ]);
+        if ($validate->fails())
+        {
+          return response()->json(['errors'=>$validate->errors(),
+            "msg"=>"Errores de validacion"
+           
+          ]);
+        }
+        $cuarto = cuartos::find($idcuarto);
+        if($cuarto){
+            $cuarto->nombre = $request->nombre;
+            $cuarto->save();
+            return response()->json(['cuarto editado correctamente', $cuarto],200);
+        }
+        return response()->json('cuarto no encontrado',404);
     }
 }
