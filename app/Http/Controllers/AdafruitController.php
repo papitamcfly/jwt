@@ -13,29 +13,43 @@ class AdafruitController extends Controller
     {
         $feed="humedad";
         $responses = []; // Aquí se guardarán todas las respuestas
-        for ($i = 1; $i < 8; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             switch($i)
             {
                 case 1:
                     $feed="humedad";
+                    $tipo ="normal";
                     break;
                 case 2:
                     $feed="humo";
+                    $tipo ="normal";
                     break;
                 case 3:
                     $feed="polvo";
+                    $tipo ="normal";
                     break;
                 case 4:
                     $feed="sonido";
+                    $tipo ="normal";
                     break;
                 case 5:
                     $feed="temperatura";
+                    $tipo ="normal";
                     break;
                 case 6:
                     $feed="voltaje";
+                    $tipo ="normal";
                     break;
                 case 7:
                     $feed="alarma";
+                    $tipo ="actuador";
+                case 8:
+                    $feed="leds";
+                    $tipo ="actuador";
+                    break;
+                case 9:
+                    $feed="acceso";
+                    $tipo ="actuador";
                     break;
             }
             $response = Http::withHeaders([
@@ -50,7 +64,8 @@ class AdafruitController extends Controller
                 
                 $responses[] = [
                     "feed_key" => $feed_key,
-                    "value" => $value
+                    "value" => $value,
+                    "tipo" => $tipo
                 ];
             }
             else{
@@ -173,14 +188,14 @@ class AdafruitController extends Controller
         if ($response->ok())
         {
             return response()->json([
-                "msg"=>"Grupo creado"
+                "msg"=>"feed creado"
             ], 200);
             
         }
         else{
         
             return  response()->json([
-                "msg" => "No se ha podido crear el grupo...",
+                "msg" => "No se ha podido crear el feed...",
                 "data" => $response->body()
             ], 400);
         }
