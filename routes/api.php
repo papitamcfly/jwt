@@ -29,6 +29,7 @@ Route::group(['middleware'=> 'api','prefix'=> 'auth'], function ($router) {
     Route::post ('/regcuarto', [AuthController::class ,'regcuarto']);
     Route::post ('/refresh', [AuthController::class ,'refresh']);
     Route::get ('/recibir-datos', [AuthController::class ,'obtenerDatos']);
+    Route::get ('/cuartoesp/{idcuarto}',[AuthController::class,'cuartoesp']);
 });
 
 Route::prefix("Adafruit")->group(function(){

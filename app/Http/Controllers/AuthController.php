@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AccountActivationMail;
-use App\Models\Todo;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\dispositivos;
+use App\Models\tipo_dispositivo;
 use App\Models\cuartos;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -111,6 +111,10 @@ return response()->json(['new_token' => $newToken]);
 
     public function update(Request $request)
     {
+        $user = JWTAuth::parseToken()->authenticate();
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|string',
@@ -119,9 +123,6 @@ return response()->json(['new_token' => $newToken]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
-        $user = JWTAuth::parseToken()->authenticate();
-
         $task = User::where('id', $user->id)->first();
 
         if (!$task) {
@@ -135,13 +136,16 @@ return response()->json(['new_token' => $newToken]);
         return response()->json(['task' => $task], 200);
     }
     public function regcuarto(Request $request){
+        $user = JWTAuth::parseToken()->authenticate();
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
         $validator = Validator::make($request->all(),[
             'nombre' => 'required|string'
         ]);
         if($validator->fails()){
             return response()->json(['error'=>$validator->errors()],400);
         }
-        $user = JWTAuth::parseToken()->authenticate();
         $userid = $user->id;
         $cuarto = new cuartos();
         $cuarto->nombre = $request->nombre;
@@ -173,7 +177,25 @@ return response()->json(['new_token' => $newToken]);
     }
     public function obtenerDatos()
     {
-        $cuartos = cuartos::all();
+        try{
+        $user = JWTAuth::parseToken()->authenticate();
+        $cuartos = $user->cuartos;
         return response()->json($cuartos,200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener los cuartos'], 500);
+        }
+    }
+    public function cuartoesp($idcuarto)
+    {
+        try{
+        JWTAuth::parseToken()->authenticate();
+        $cuarto = cuartos::find($idcuarto);
+        $dispositivos = $cuarto->dispositivos;
+        return response()->json($cuarto,200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener la informacion de los cuartos'], 500);
+        }
     }
 }

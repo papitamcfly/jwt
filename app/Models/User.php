@@ -15,7 +15,14 @@ class User extends Authenticatable implements JWTSubject
 
     protected $table = 'users';
     public $timestamps = false;
-
+    public function cuartos()
+    {
+        return $this->hasMany(cuartos::class, 'propietario');
+    }
+    public function tipoDispositivos()
+    {
+        return $this->belongsTo(tipoUsuario::class,'tipo_usuario');
+    }
     /**
      * The attributes that are mass assignable.
      *
